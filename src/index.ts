@@ -31,7 +31,7 @@ const packageJson = require('../package.json');
 
 const isWindows = os.platform() === 'win32';
 
-const APP_URL = process.env.APP_URL || 'https://app.httptoolkit.tech';
+const APP_URL = 'https://6599093a19fbf1aa4743250f--dashing-kringle-61a63d.netlify.app/';
 const AUTH_TOKEN = crypto.randomBytes(20).toString('base64url');
 const DESKTOP_VERSION = packageJson.version;
 const BUNDLED_SERVER_VERSION = packageJson.config['httptoolkit-server-version'];
