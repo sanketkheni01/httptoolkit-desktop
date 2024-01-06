@@ -72,7 +72,7 @@
         "zip"
       ],
       "artifactName": "HttpToolkit-${os}-${arch}-${version}.${ext}",
-      "icon": "./src/icons/icon.ico",
+      "icon": "./src/icons/icon.ico"
     },
     "nsis": {
       "installerIcon": "./src/icons/icon.ico",
