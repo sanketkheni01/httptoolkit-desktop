@@ -73,7 +73,6 @@
       ],
       "artifactName": "HttpToolkit-${os}-${arch}-${version}.${ext}",
       "icon": "./src/icons/icon.ico",
-      "forceCodeSigning": true
     },
     "nsis": {
       "installerIcon": "./src/icons/icon.ico",
