@@ -1,39 +1,39 @@
 const DEV_MODE = process.env.HTK_DEV === 'true'
 
 // Set up error handling before everything else:
-import { logError, addBreadcrumb } from './errors'
+import { addBreadcrumb, logError } from './errors'
 
-import { spawn, ChildProcess } from 'child_process'
-import * as os from 'os'
-import { promises as fs, createWriteStream, WriteStream } from 'fs'
-import * as net from 'net'
-import * as path from 'path'
+import { ChildProcess, spawn } from 'child_process'
 import * as crypto from 'crypto'
-import { promisify } from 'util'
-import * as querystring from 'querystring'
-import { URL } from 'url'
 import {
-  app,
   BrowserWindow,
-  shell,
   Menu,
+  app,
   dialog,
-  session,
   ipcMain,
+  session,
+  shell,
 } from 'electron'
-import * as yargs from 'yargs'
-import * as semver from 'semver'
+import { WriteStream, createWriteStream, promises as fs } from 'fs'
+import * as net from 'net'
+import * as os from 'os'
+import * as path from 'path'
+import * as querystring from 'querystring'
 import * as rimraf from 'rimraf'
+import * as semver from 'semver'
+import { URL } from 'url'
+import { promisify } from 'util'
+import * as yargs from 'yargs'
 const rmRF = promisify(rimraf)
 
 import * as windowStateKeeper from 'electron-window-state'
 import { getSystemProxy } from 'os-proxy-config'
 import registerContextMenu = require('electron-context-menu')
 
-import { getDeferred, delay } from './util'
-import { getMenu, shouldAutoHideMenu } from './menu'
 import { ContextMenuDefinition, openContextMenu } from './context-menu'
+import { getMenu, shouldAutoHideMenu } from './menu'
 import { stopServer } from './stop-server'
+import { delay, getDeferred } from './util'
 
 const packageJson = require('../package.json')
 
@@ -526,7 +526,23 @@ if (!amMainInstance) {
   // Use a promise to organize events around 'ready', and ensure they never
   // fire before, as Electron will refuse to do various things if they do.
   const appReady = getDeferred()
-  app.on('ready', () => appReady.resolve())
+  app.on('ready', () => {
+    appReady.resolve()
+    const filter = {
+      urls: ['*://127.0.0.1*'],
+    }
+
+    session.defaultSession.webRequest.onBeforeSendHeaders(
+      filter,
+      (details, callback) => {
+        // @ts-ignore
+        details.requestHeaders['Origin'] = null
+        // @ts-ignore
+        details.headers['Origin'] = null
+        callback({ requestHeaders: details.requestHeaders })
+      }
+    )
+  })
 
   const portCheck = checkServerPortAvailable('127.0.0.1', 45457).catch(
     async () => {

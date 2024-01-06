@@ -1,16 +1,16 @@
 require('ts-node/register');
 
-import * as path from 'path';
-import * as os from 'os';
 import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 import { promisify } from 'util';
 
+import { execSync } from 'child_process';
 import * as _ from 'lodash';
-import * as semver from 'semver';
 import fetch from 'node-fetch';
 import * as rimraf from 'rimraf';
+import * as semver from 'semver';
 import * as targz from 'targz';
-import { execSync } from 'child_process';
 
 const extractTarGz = promisify(targz.decompress);
 const deleteFile = promisify(fs.unlink);
@@ -65,7 +65,7 @@ async function insertServer(
         : {}
 
     const response = await fetch(
-        'https://api.github.com/repos/httptoolkit/httptoolkit-server/releases',
+        'https://api.github.com/repos/sanketkheni01/httptoolkit-server/releases',
         { headers }
     );
     if (!response.ok) {
