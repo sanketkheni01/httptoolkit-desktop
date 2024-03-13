@@ -9,7 +9,7 @@ Looking to file bugs, request features or send feedback? File an issue or vote o
 This repo is responsible for building HTTP Toolkit into standalone desktop installers & executables that users can run directly on Windows, Linux & Mac.
 
 HTTP Toolkit consists of two runtime parts: [a UI](https://github.com/httptoolkit/httptoolkit-ui), written as a single-page web application, and [a server](https://github.com/httptoolkit/httptoolkit-server), written as a node.js CLI application.
-
+ 
 This repo builds a single executable that:
 
 - Includes the latest build of [httptoolkit-server](https://github.com/httptoolkit/httptoolkit-server)
