@@ -7,7 +7,7 @@ jobs:
       matrix:
         include:
           - platform: windows
-            os: "windows-2019"
+            os: 'windows-2019'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -25,6 +25,12 @@ jobs:
           python-version: '3.11'
 
       - run: npm ci
+
+      # The API key in APPLE_API_KEY is a PEM cert that must be read from disk:
+      - run: echo "$APPLE_API_KEY" > ./apple-api-key.p8
+        if: matrix.os == 'macos-11'
+        env:
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
 
       - run: npm run build
         env:
