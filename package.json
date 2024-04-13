@@ -1,7 +1,7 @@
 {
   "name": "httptoolkit-desktop",
   "productName": "HTTP Toolkit",
-  "version": "1.14.10",
+  "version": "1.14.11",
   "homepage": "https://httptoolkit.tech",
   "private": true,
   "description": "HTTP(S) debugging, development & testing tool",
@@ -11,18 +11,18 @@
     "server:setup": "ts-node ./setup-server.ts",
     "build": "npm run build:src && npm run build:electron",
     "build:src": "tsc",
+    "postbuild:src": "ts-node ./strip-preload-map.ts",
     "build:electron": "npm run server:setup && electron-builder build",
     "build:dir-only": "npm run server:setup && electron-builder --dir",
-    "postbuild": "ts-node ./strip-preload-map.ts",
     "start": "npm run server:setup && npm run start:app",
-    "start:dev": "ts-node ./skip-server.ts && cross-env HTK_DEV=true APP_URL='http://local.httptoolkit.tech:8080' npm run start:app",
+    "start:dev": "ts-node ./skip-server.ts && cross-env HTK_DEV=true APP_URL='http://localhost:8080' npm run start:app",
     "start:app": "tsc-watch --onSuccess \"electron .\""
   },
   "keywords": [],
   "author": "Tim Perry",
   "license": "AGPL-3.0-or-later",
   "config": {
-    "httptoolkit-server-version": "1.14.10"
+    "httptoolkit-server-version": "1.14.11"
   },
   "build": {
     "appId": "tech.httptoolkit.desktop",
@@ -61,8 +61,8 @@
       "icon": "src/icons/icon.icns",
       "entitlements": "src/entitlements.plist",
       "entitlementsInherit": "src/entitlements.plist",
-      "forceCodeSigning": false,
-      "notarize": false
+      "forceCodeSigning": true,
+      "notarize": true
     },
     "dmg": {
       "artifactName": "HttpToolkit-${version}.dmg"
@@ -118,7 +118,6 @@
     "appImage": {
       "artifactName": "HttpToolkit-${version}.AppImage"
     },
-    "afterSign": "./src/hooks/after-sign.js",
     "publish": null
   },
   "dependencies": {
@@ -140,14 +139,10 @@
     "@types/rimraf": "^3.0.0",
     "@types/semver": "^7.3.4",
     "@types/targz": "^1.0.0",
-    "@types/universal-analytics": "^0.4.3",
     "@types/yargs": "^15.0.3",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
     "cross-env": "^7.0.3",
-    "electron": "^22.3.26",
+    "electron": "^29.1.5",
     "electron-builder": "^24.13.3",
-    "electron-notarize": "^1.0.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.7",
     "targz": "^1.0.1",
